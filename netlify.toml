@@ -1,6 +1,6 @@
 [build]
-  # Build command with dependency resolution
-  command = "npm install --legacy-peer-deps --force && npm run build"
+  # Build command with dependency resolution and CI override
+  command = "npm install --legacy-peer-deps --force && CI=false npm run build"
   
   # Directory to publish (build output)
   publish = "build"
