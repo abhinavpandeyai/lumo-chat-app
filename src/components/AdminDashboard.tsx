@@ -410,14 +410,14 @@ export const AdminDashboard: React.FC = () => {
     {
       id: '1',
       name: 'Main Corporate Site',
-      url: 'https://company.sharepoint.com/sites/main',
+      url: 'https://pcsoft.sharepoint.com/sites/main',
       isActive: true,
       lastSync: new Date('2025-09-16T10:30:00')
     },
     {
       id: '2',
       name: 'Help Engine',
-      url: 'https://company.sharepoint.com/sites/help-engine',
+      url: 'https://pcsoft.sharepoint.com/sites/help-engine',
       isActive: true,
       lastSync: new Date('2025-09-16T09:15:00')
     }
@@ -666,21 +666,21 @@ export const AdminDashboard: React.FC = () => {
   const userAccess: UserAccess[] = [
     {
       id: '1',
-      email: 'priya.sharma@company.com',
+      email: 'priya.sharma@pcsoft.com',
       role: 'admin',
       isActive: true,
       lastLogin: new Date('2025-09-16T08:30:00')
     },
     {
       id: '2',
-      email: 'rahul.gupta@company.com',
+      email: 'rahul.gupta@pcsoft.com',
       role: 'user',
       isActive: true,
       lastLogin: new Date('2025-09-15T16:45:00')
     },
     {
       id: '3',
-      email: 'kavya.patel@company.com',
+      email: 'kavya.patel@pcsoft.com',
       role: 'user',
       isActive: false,
       lastLogin: new Date('2025-09-10T14:20:00')
