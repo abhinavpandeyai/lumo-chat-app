@@ -1,6 +1,6 @@
 [build]
-  # Build command
-  command = "npm run build"
+  # Build command with dependency resolution
+  command = "npm install --legacy-peer-deps --force && npm run build"
   
   # Directory to publish (build output)
   publish = "build"
@@ -13,6 +13,9 @@
     GENERATE_SOURCEMAP = "false"
     # React app environment
     REACT_APP_ENVIRONMENT = "production"
+    # NPM configuration to handle peer dependency issues
+    NPM_CONFIG_LEGACY_PEER_DEPS = "true"
+    NPM_CONFIG_FORCE = "true"
 
 # Headers for security and performance
 [[headers]]

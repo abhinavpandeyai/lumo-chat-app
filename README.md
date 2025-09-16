@@ -153,3 +153,4 @@ For support and questions, please contact the development team or create an issu
 ---
 
 **Note**: This is a demonstration application with mock AI responses. In a production environment, you would integrate with actual AI services like OpenAI GPT, Claude, or your custom AI backend.
+# lumo-chat-app
