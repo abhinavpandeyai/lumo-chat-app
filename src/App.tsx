@@ -10,6 +10,7 @@ import { Login } from './components/Login';
 import { ChatSidebar } from './components/ChatSidebar';
 import { ChatArea } from './components/ChatArea';
 import { AdminDashboard } from './components/AdminDashboard';
+import { AutoLoginNotification } from './components/SessionExpirationNotification';
 import { GlobalStyle, Container, IconButton } from './components/styled';
 import { lightTheme } from './theme';
 
@@ -67,6 +68,11 @@ const DashboardLayout: React.FC = () => {
     closeSidebar();
   };
 
+  const handleNavigateToChat = () => {
+    navigate('/');
+    closeSidebar();
+  };
+
   const isAdminPage = location.pathname === '/admin';
   const isChatPage = location.pathname === '/chat' || location.pathname === '/';
 
@@ -91,6 +97,8 @@ const DashboardLayout: React.FC = () => {
           isOpen={sidebarOpen} 
           onClose={closeSidebar}
           onNavigateToAdmin={handleNavigateToAdmin}
+          onNavigateToChat={handleNavigateToChat}
+          isAdminPage={isAdminPage}
         />
         {renderMainContent()}
       </Container>
@@ -136,6 +144,7 @@ function App() {
         <Router>
           <AppRoutes />
         </Router>
+        <AutoLoginNotification />
         <Toaster
           position="top-right"
           toastOptions={{

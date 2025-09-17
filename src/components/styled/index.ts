@@ -133,6 +133,13 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'ghost
     outline: 2px solid ${props => props.theme.colors.primary};
     outline-offset: 2px;
   }
+
+  /* Better mobile touch targets */
+  @media (max-width: 768px) {
+    min-height: 44px;
+    padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.lg};
+    font-size: 1rem;
+  }
 `;
 
 export const Input = styled.input`
@@ -211,6 +218,21 @@ export const Sidebar = styled.aside<{ isOpen?: boolean }>`
     left: 0;
     z-index: 1000;
     transform: translateX(${props => props.isOpen ? '0' : '-100%'});
+    height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height for better mobile support */
+    max-height: 100vh;
+    max-height: 100dvh;
+    /* Remove flex layout on mobile to allow natural scrolling */
+    display: block;
+    overflow-y: auto; /* Allow scrolling on mobile */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    /* Hide scrollbar for cleaner look */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -279,6 +301,10 @@ export const IconButton = styled.button`
   @media (max-width: 768px) {
     width: 44px;
     height: 44px;
+    
+    /* Ensure buttons are easily tappable */
+    min-width: 44px;
+    min-height: 44px;
   }
 `;
 
@@ -312,13 +338,11 @@ export const ChatList = styled.div`
   
   /* Better scrollbar on mobile */
   @media (max-width: 768px) {
-    /* Hide scrollbar on mobile for cleaner look */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    /* On mobile, since sidebar uses block layout, adjust accordingly */
+    flex: none;
+    overflow-y: visible; /* Let parent handle scrolling */
+    padding-bottom: ${props => props.theme.spacing.lg}; /* Extra padding for better scroll */
+    min-height: auto;
   }
 `;
 

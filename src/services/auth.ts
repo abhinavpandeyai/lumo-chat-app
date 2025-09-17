@@ -16,7 +16,7 @@ export class AuthService {
         email: credentials.email,
         name: 'Sateesh Jain',
         role: 'admin',
-        avatar: '/images/avatars/admin.jpg',
+        avatar: '/images/avatars/sateeshjain.jpeg',
         createdAt: new Date(),
       };
 
@@ -32,7 +32,7 @@ export class AuthService {
         email: credentials.email,
         name: 'Harsha Jain',
         role: 'user',
-        avatar: '/images/avatars/user.jpg',
+        avatar: '/images/avatars/harshajain.jpeg',
         createdAt: new Date(),
       };
 
@@ -50,14 +50,25 @@ export class AuthService {
     AuthToken.remove();
     LocalStorage.remove(config.storage.user);
     LocalStorage.remove(config.storage.chats);
+    LocalStorage.remove(config.storage.sessionTimestamp);
   }
 
   static getCurrentUser(): User | null {
     try {
-      const userStr = LocalStorage.getString(config.storage.user);
-      if (!userStr || !AuthToken.isValid()) {
+      const userStr = LocalStorage.get(config.storage.user);
+      const hasValidToken = AuthToken.isValid();
+      
+      // For auto-login check, import SessionManager directly
+      const SessionManager = require('../utils/session').SessionManager;
+      const canAutoLogin = SessionManager.canAutoLogin();
+      
+      // Allow user to stay logged in if:
+      // 1. They have a valid JWT token, OR
+      // 2. They can auto-login (within 15 minutes of last login)
+      if (!userStr || typeof userStr !== 'string' || (!hasValidToken && !canAutoLogin)) {
         return null;
       }
+      
       return JSON.parse(userStr);
     } catch {
       return null;
@@ -77,7 +88,7 @@ export class AuthService {
       name: user.name,
       role: user.role,
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 24 hours
+      exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour (longer than session timeout)
     }));
     const signature = btoa('mock-signature');
     

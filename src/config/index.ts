@@ -10,6 +10,7 @@ export const config = {
     user: 'lumo_user',
     chats: 'lumo_chats',
     theme: 'lumo_theme',
+    sessionTimestamp: 'lumo_session_timestamp',
   },
 
   // API endpoints

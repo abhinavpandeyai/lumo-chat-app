@@ -9,6 +9,10 @@ export class LocalStorage {
     }
   }
 
+  static getString(key: string): string | null {
+    return this.get(key);
+  }
+
   static set(key: string, value: string): void {
     try {
       localStorage.setItem(key, value);
@@ -41,10 +45,15 @@ export class AuthToken {
 
   static set(token: string): void {
     LocalStorage.set(config.storage.authToken, token);
+    // Set login timestamp when token is stored for auto-login window
+    const SessionManager = require('./session').SessionManager;
+    SessionManager.setLoginTimestamp();
   }
 
   static remove(): void {
     LocalStorage.remove(config.storage.authToken);
+    const SessionManager = require('./session').SessionManager;
+    SessionManager.removeLoginTimestamp();
   }
 
   static isValid(): boolean {
@@ -52,13 +61,21 @@ export class AuthToken {
     if (!token) return false;
 
     try {
-      // Simple JWT expiry check (in a real app, you'd validate signature too)
+      // Only check JWT expiry - no client-side session timeout
       const payload = JSON.parse(atob(token.split('.')[1]));
       const now = Date.now() / 1000;
+      
+      // Only validate JWT expiry (server-side validation)
       return payload.exp > now;
     } catch {
       return false;
     }
+  }
+
+  static canAutoLogin(): boolean {
+    // Check if auto-login is allowed (within 15 minutes of last login)
+    const SessionManager = require('./session').SessionManager;
+    return SessionManager.canAutoLogin();
   }
 }
 

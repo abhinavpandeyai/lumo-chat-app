@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, ReactNode, useCallback } from 'react';
 import { User, AuthContextType, LoginFormData } from '../types';
 import { AuthService } from '../services/auth';
+import { AuthToken } from '../utils';
+import { SessionManager } from '../utils/session';
 
 interface AuthState {
   user: User | null;
@@ -69,11 +71,32 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  // Track user activity for potential future features
+  const trackActivity = useCallback(() => {
+    if (state.isAuthenticated) {
+      SessionManager.updateLastActivity();
+    }
+  }, [state.isAuthenticated]);
+
   useEffect(() => {
     // Check for existing authentication on app load
     const user = AuthService.getCurrentUser();
     dispatch({ type: 'SET_USER', payload: user });
-  }, []);
+
+    // Set up user activity listeners (for tracking only, no forced logout)
+    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart', 'click'];
+    
+    activityEvents.forEach(event => {
+      document.addEventListener(event, trackActivity, true);
+    });
+
+    // Cleanup on unmount
+    return () => {
+      activityEvents.forEach(event => {
+        document.removeEventListener(event, trackActivity, true);
+      });
+    };
+  }, [trackActivity]);
 
   const login = async (email: string, password: string): Promise<void> => {
     dispatch({ type: 'AUTH_START' });

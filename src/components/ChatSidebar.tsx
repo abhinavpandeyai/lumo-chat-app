@@ -13,6 +13,8 @@ interface ChatSidebarProps {
   isOpen: boolean;
   onClose?: () => void;
   onNavigateToAdmin?: () => void;
+  onNavigateToChat?: () => void;
+  isAdminPage?: boolean;
 }
 
 const SidebarHeader = styled.div`
@@ -36,10 +38,16 @@ const SidebarBrand = styled.div`
   }
 `;
 
-const SidebarLogo = styled.img`
+const SidebarLogo = styled.img<{ clickable?: boolean }>`
   width: 140px;
   height: 140px;
   object-fit: contain;
+  cursor: ${props => props.clickable ? 'pointer' : 'default'};
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: ${props => props.clickable ? 'scale(1.05)' : 'none'};
+  }
 
   @media (max-width: 768px) {
     width: 100px;
@@ -68,6 +76,11 @@ const SidebarFooter = styled.div`
 
   @media (max-width: 768px) {
     padding: ${props => props.theme.spacing.sm};
+    /* Ensure footer is always at the bottom on mobile */
+    margin-top: ${props => props.theme.spacing.lg};
+    position: sticky;
+    bottom: 0;
+    background-color: ${props => props.theme.colors.surface};
   }
 `;
 
@@ -195,11 +208,14 @@ const EmptyChats = styled.div`
   color: ${props => props.theme.colors.textSecondary};
 `;
 
-export const ChatSidebar: React.FC<ChatSidebarProps> = ({ isOpen, onClose, onNavigateToAdmin }) => {
+export const ChatSidebar: React.FC<ChatSidebarProps> = ({ isOpen, onClose, onNavigateToAdmin, onNavigateToChat, isAdminPage }) => {
   const { user, logout } = useAuth();
   const { chats, activeChat, createNewChat, selectChat, deleteChat, searchChats } = useChat();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredChats, setFilteredChats] = useState(chats);
+
+  // Debug: Log user data
+  console.log('ChatSidebar user data:', user);
 
   // Helper function to get the first user message from a chat
   const getFirstUserMessage = (chat: Chat) => {
@@ -233,12 +249,32 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ isOpen, onClose, onNav
   };
 
   const handleNewChat = () => {
-    createNewChat();
+    // If on admin page, navigate to chat first
+    if (isAdminPage && onNavigateToChat) {
+      onNavigateToChat();
+      // Create new chat after a brief delay to ensure navigation completes
+      setTimeout(() => {
+        createNewChat();
+      }, 100);
+    } else {
+      // If already on chat page, just create new chat
+      createNewChat();
+    }
     if (onClose) onClose();
   };
 
   const handleChatSelect = (chatId: string) => {
-    selectChat(chatId);
+    // If on admin page, navigate to chat first
+    if (isAdminPage && onNavigateToChat) {
+      onNavigateToChat();
+      // Select chat after a brief delay to ensure navigation completes
+      setTimeout(() => {
+        selectChat(chatId);
+      }, 100);
+    } else {
+      // If already on chat page, just select the chat
+      selectChat(chatId);
+    }
     if (onClose) onClose();
   };
 
@@ -255,13 +291,23 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ isOpen, onClose, onNav
     toast.success('Signed out successfully');
   };
 
+  const handleLogoClick = () => {
+    // Only navigate to chat if we're on admin page
+    if (isAdminPage && onNavigateToChat) {
+      onNavigateToChat();
+    }
+  };
+
   return (
     <Sidebar isOpen={isOpen}>
       <SidebarHeader>
         <SidebarBrand>
           <SidebarLogo 
             src="/images/lumo_logo.png" 
-            alt="Lumo Logo" 
+            alt="Lumo Logo"
+            clickable={isAdminPage}
+            onClick={handleLogoClick}
+            title={isAdminPage ? 'Click to go back to chat' : 'Lumo Chat'}
           />
         </SidebarBrand>
         <Button onClick={handleNewChat} size="sm">
