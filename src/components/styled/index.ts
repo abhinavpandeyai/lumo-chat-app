@@ -16,7 +16,6 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     -moz-osx-font-smoothing: grayscale;
     background-color: ${props => props.theme.colors.background};
     color: ${props => props.theme.colors.text};
-    overflow: hidden;
   }
 
   code {
@@ -52,6 +51,7 @@ export const Container = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 `;
 
 export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'ghost'; size?: 'sm' | 'md' | 'lg' }>`
@@ -203,6 +203,7 @@ export const Sidebar = styled.aside<{ isOpen?: boolean }>`
   flex-direction: column;
   height: 100vh;
   transition: transform 0.3s ease-in-out;
+  overflow: hidden; /* Prevent sidebar itself from scrolling */
 
   @media (max-width: 768px) {
     position: fixed;
@@ -273,11 +274,18 @@ export const IconButton = styled.button`
     outline: 2px solid ${props => props.theme.colors.primary};
     outline-offset: 2px;
   }
+
+  /* Better touch targets on mobile */
+  @media (max-width: 768px) {
+    width: 44px;
+    height: 44px;
+  }
 `;
 
 export const SearchContainer = styled.div`
   position: relative;
   margin: ${props => props.theme.spacing.md};
+  flex-shrink: 0; /* Prevent search from shrinking */
 `;
 
 export const SearchInput = styled(Input)`
@@ -297,6 +305,21 @@ export const ChatList = styled.div`
   flex: 1;
   overflow-y: auto;
   padding: 0 ${props => props.theme.spacing.md};
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  
+  /* Ensure minimum height for proper scrolling */
+  min-height: 0;
+  
+  /* Better scrollbar on mobile */
+  @media (max-width: 768px) {
+    /* Hide scrollbar on mobile for cleaner look */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 export const ChatItem = styled.div<{ isActive?: boolean }>`

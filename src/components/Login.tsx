@@ -14,12 +14,24 @@ const LoginContainer = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.secondary} 100%);
   padding: ${props => props.theme.spacing.lg};
+  overflow-y: auto;
+  
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.md};
+    align-items: flex-start;
+    padding-top: ${props => props.theme.spacing.xl};
+  }
 `;
 
 const LoginCard = styled(Card)`
   width: 100%;
   max-width: 400px;
   text-align: center;
+  
+  @media (max-width: 768px) {
+    margin-bottom: ${props => props.theme.spacing.xl};
+    min-height: auto;
+  }
 `;
 
 const LoginHeader = styled.div`
@@ -37,9 +49,14 @@ const LogoContainer = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
+  
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const LoginTitle = styled.h1`

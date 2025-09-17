@@ -8,6 +8,14 @@ const InputContainer = styled.div<{ isInCenter?: boolean }>`
   padding: ${props => props.isInCenter ? '0' : `${props.theme.spacing.lg}`};
   border-top: ${props => props.isInCenter ? 'none' : `1px solid ${props.theme.colors.border}`};
   background-color: ${props => props.isInCenter ? 'transparent' : props.theme.colors.background};
+
+  @media (max-width: 768px) {
+    padding: ${props => props.isInCenter ? '0' : `${props.theme.spacing.md}`};
+  }
+
+  @media (max-width: 480px) {
+    padding: ${props => props.isInCenter ? '0' : `${props.theme.spacing.sm}`};
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -16,6 +24,11 @@ const InputWrapper = styled.div`
   align-items: flex-end;
   max-width: 800px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    gap: ${props => props.theme.spacing.sm};
+    max-width: 100%;
+  }
 `;
 
 const TextareaContainer = styled.div`
@@ -35,6 +48,16 @@ const StyledTextarea = styled(Textarea)`
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}20;
   }
+
+  @media (max-width: 768px) {
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 20px;
+    max-height: 100px;
+  }
+
+  @media (max-width: 480px) {
+    padding-right: 45px;
+  }
 `;
 
 const SendButton = styled(Button)`
@@ -45,6 +68,13 @@ const SendButton = styled(Button)`
   height: 32px;
   padding: 0;
   min-width: auto;
+
+  @media (max-width: 480px) {
+    width: 28px;
+    height: 28px;
+    right: 6px;
+    bottom: 6px;
+  }
 `;
 
 const NewChatButton = styled(Button)`

@@ -18,6 +18,11 @@ interface ChatSidebarProps {
 const SidebarHeader = styled.div`
   padding: ${props => props.theme.spacing.lg};
   border-bottom: 1px solid ${props => props.theme.colors.border};
+  flex-shrink: 0; /* Prevent header from shrinking */
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.md};
+  }
 `;
 
 const SidebarBrand = styled.div`
@@ -25,12 +30,26 @@ const SidebarBrand = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: ${props => props.theme.spacing.md};
+
+  @media (max-width: 768px) {
+    margin-bottom: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const SidebarLogo = styled.img`
   width: 140px;
   height: 140px;
   object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media (max-width: 480px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const SidebarTitle = styled.h2`
@@ -45,6 +64,11 @@ const SidebarFooter = styled.div`
   padding: ${props => props.theme.spacing.md};
   border-top: 1px solid ${props => props.theme.colors.border};
   margin-top: auto;
+  flex-shrink: 0; /* Prevent footer from shrinking */
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const UserInfo = styled.div`
@@ -55,6 +79,12 @@ const UserInfo = styled.div`
   border-radius: ${props => props.theme.borderRadius.md};
   background-color: ${props => props.theme.colors.background};
   margin-bottom: ${props => props.theme.spacing.md};
+
+  @media (max-width: 768px) {
+    gap: ${props => props.theme.spacing.sm};
+    padding: ${props => props.theme.spacing.sm};
+    margin-bottom: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const UserDetails = styled.div`
@@ -114,6 +144,15 @@ const StyledChatItem = styled(ChatItem)`
       color: rgba(255, 255, 255, 0.8);
     }
   `}
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.md};
+    
+    /* Always show actions on mobile for better touch targets */
+    ${ChatActions} {
+      opacity: 1;
+    }
+  }
 `;
 
 const ActionButton = styled.button`
@@ -133,6 +172,16 @@ const ActionButton = styled.button`
   &:hover {
     opacity: 1;
     background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+    opacity: 0.8;
+    
+    &:hover {
+      opacity: 1;
+    }
   }
 `;
 
@@ -233,6 +282,14 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ isOpen, onClose, onNav
       </SearchContainer>
 
       <ChatList>
+        {/* 
+          ChatList is now properly configured for scrolling:
+          - flex: 1 allows it to expand to fill available space
+          - overflow-y: auto enables vertical scrolling when content overflows
+          - -webkit-overflow-scrolling: touch provides smooth scrolling on iOS
+          - min-height: 0 ensures proper flex behavior
+          - Scrollbar is hidden on mobile for cleaner appearance
+        */}
         {filteredChats.length === 0 ? (
           <EmptyChats>
             <MessageSquare size={48} style={{ marginBottom: '1rem', opacity: 0.3 }} />

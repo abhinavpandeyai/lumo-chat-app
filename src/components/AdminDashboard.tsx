@@ -36,6 +36,14 @@ const AdminHeader = styled.div`
   border-bottom: 1px solid #e2e8f0;
   padding: ${props => props.theme.spacing.lg} ${props => props.theme.spacing.xl};
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.md};
+  }
+
+  @media (max-width: 480px) {
+    padding: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const HeaderTop = styled.div`
@@ -43,6 +51,11 @@ const HeaderTop = styled.div`
   align-items: center;
   gap: ${props => props.theme.spacing.md};
   margin-bottom: ${props => props.theme.spacing.md};
+
+  @media (max-width: 768px) {
+    gap: ${props => props.theme.spacing.sm};
+    margin-bottom: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const BackButton = styled.button`
@@ -74,12 +87,28 @@ const AdminTitle = styled.h1`
   font-weight: 700;
   color: #111827;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const AdminSubtitle = styled.p`
   color: #6b7280;
   font-size: 1rem;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 480px) {
+    display: none; /* Hide subtitle on very small screens */
+  }
 `;
 
 const StatsGrid = styled.div`
@@ -87,6 +116,17 @@ const StatsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${props => props.theme.spacing.lg};
   margin-bottom: ${props => props.theme.spacing.xl};
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: ${props => props.theme.spacing.md};
+    margin-bottom: ${props => props.theme.spacing.lg};
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const StatCard = styled.div`
@@ -137,6 +177,14 @@ const ScrollableContent = styled.div`
   flex: 1;
   overflow-y: auto;
   padding: ${props => props.theme.spacing.xl};
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.md};
+  }
+
+  @media (max-width: 480px) {
+    padding: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const TabNavigation = styled.div`
@@ -144,6 +192,13 @@ const TabNavigation = styled.div`
   gap: ${props => props.theme.spacing.sm};
   margin-bottom: ${props => props.theme.spacing.xl};
   border-bottom: 1px solid #e2e8f0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media (max-width: 768px) {
+    margin-bottom: ${props => props.theme.spacing.lg};
+    gap: 0;
+  }
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -159,9 +214,26 @@ const TabButton = styled.button<{ active: boolean }>`
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.xs};
+  white-space: nowrap;
+  flex-shrink: 0;
 
   &:hover {
     color: #3b82f6;
+  }
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: ${props => props.theme.spacing.sm};
+    gap: ${props => props.theme.spacing.xs};
+    
+    /* Hide text on very small screens, show only icons */
+    span {
+      display: none;
+    }
   }
 `;
 
@@ -211,6 +283,31 @@ const ActionButton = styled.button`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
+`;
+
+const TableContainer = styled.div`
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  @media (max-width: 768px) {
+    margin: 0 -${props => props.theme.spacing.md};
+    
+    ${Table} {
+      min-width: 600px; /* Ensure table doesn't get too cramped */
+    }
+  }
+
+  @media (max-width: 480px) {
+    margin: 0 -${props => props.theme.spacing.sm};
+    
+    ${Table} {
+      min-width: 500px;
+    }
+  }
 `;
 
 const TableHeader = styled.th`
@@ -738,36 +835,38 @@ export const AdminDashboard: React.FC = () => {
             Recent Activity
           </SectionTitle>
         </SectionHeader>
-        <Table>
-          <thead>
-            <tr>
-              <TableHeader>Activity</TableHeader>
-              <TableHeader>User</TableHeader>
-              <TableHeader>Time</TableHeader>
-              <TableHeader>Status</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            <TableRow>
-              <TableCell>SharePoint sync completed</TableCell>
-              <TableCell>System</TableCell>
-              <TableCell>2 hours ago</TableCell>
-              <TableCell><StatusBadge status="success"><CheckCircle size={12} />Success</StatusBadge></TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>New user added</TableCell>
-              <TableCell>Admin</TableCell>
-              <TableCell>4 hours ago</TableCell>
-              <TableCell><StatusBadge status="info"><Users size={12} />Info</StatusBadge></TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>File vectorization started</TableCell>
-              <TableCell>System</TableCell>
-              <TableCell>6 hours ago</TableCell>
-              <TableCell><StatusBadge status="warning"><Clock size={12} />In Progress</StatusBadge></TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
+        <TableContainer>
+          <Table>
+            <thead>
+              <tr>
+                <TableHeader>Activity</TableHeader>
+                <TableHeader>User</TableHeader>
+                <TableHeader>Time</TableHeader>
+                <TableHeader>Status</TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              <TableRow>
+                <TableCell>SharePoint sync completed</TableCell>
+                <TableCell>System</TableCell>
+                <TableCell>2 hours ago</TableCell>
+                <TableCell><StatusBadge status="success"><CheckCircle size={12} />Success</StatusBadge></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>New user added</TableCell>
+                <TableCell>Admin</TableCell>
+                <TableCell>4 hours ago</TableCell>
+                <TableCell><StatusBadge status="info"><Users size={12} />Info</StatusBadge></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>File vectorization started</TableCell>
+                <TableCell>System</TableCell>
+                <TableCell>6 hours ago</TableCell>
+                <TableCell><StatusBadge status="warning"><Clock size={12} />In Progress</StatusBadge></TableCell>
+              </TableRow>
+            </tbody>
+          </Table>
+        </TableContainer>
       </SectionContainer>
     </>
   );
@@ -785,38 +884,40 @@ export const AdminDashboard: React.FC = () => {
             Add Site
           </ActionButton>
         </SectionHeader>
-        <Table>
-          <thead>
-            <tr>
-              <TableHeader>Site Name</TableHeader>
-              <TableHeader>URL</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Last Sync</TableHeader>
-              <TableHeader>Actions</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            {sharepointSites.map(site => (
-              <TableRow key={site.id}>
-                <TableCell>{site.name}</TableCell>
-                <TableCell>{site.url}</TableCell>
-                <TableCell>
-                  <StatusBadge status={site.isActive ? 'success' : 'error'}>
-                    {site.isActive ? <CheckCircle size={12} /> : <XCircle size={12} />}
-                    {site.isActive ? 'Connected' : 'Error'}
-                  </StatusBadge>
-                </TableCell>
-                <TableCell>{site.isActive ? site.lastSync.toLocaleString() : 'Failed'}</TableCell>
-                <TableCell>
-                  <ActionButton>
-                    <RefreshCw size={14} />
-                    {site.isActive ? 'Sync' : 'Configure'}
-                  </ActionButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </tbody>
-        </Table>
+        <TableContainer>
+          <Table>
+            <thead>
+              <tr>
+                <TableHeader>Site Name</TableHeader>
+                <TableHeader>URL</TableHeader>
+                <TableHeader>Status</TableHeader>
+                <TableHeader>Last Sync</TableHeader>
+                <TableHeader>Actions</TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              {sharepointSites.map(site => (
+                <TableRow key={site.id}>
+                  <TableCell>{site.name}</TableCell>
+                  <TableCell>{site.url}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={site.isActive ? 'success' : 'error'}>
+                      {site.isActive ? <CheckCircle size={12} /> : <XCircle size={12} />}
+                      {site.isActive ? 'Connected' : 'Error'}
+                    </StatusBadge>
+                  </TableCell>
+                  <TableCell>{site.isActive ? site.lastSync.toLocaleString() : 'Failed'}</TableCell>
+                  <TableCell>
+                    <ActionButton>
+                      <RefreshCw size={14} />
+                      {site.isActive ? 'Sync' : 'Configure'}
+                    </ActionButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </tbody>
+          </Table>
+        </TableContainer>
       </SectionContainer>
 
       <SectionContainer>
@@ -830,31 +931,33 @@ export const AdminDashboard: React.FC = () => {
             Modify Schedule
           </ActionButton>
         </SectionHeader>
-        <Table>
-          <thead>
-            <tr>
-              <TableHeader>Schedule Name</TableHeader>
-              <TableHeader>Frequency</TableHeader>
-              <TableHeader>Next Run</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Actions</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            <TableRow>
-              <TableCell>Daily Full Sync</TableCell>
-              <TableCell>Every day at 2:00 AM</TableCell>
-              <TableCell>Tomorrow 2:00 AM</TableCell>
-              <TableCell><StatusBadge status="success"><CheckCircle size={12} />Active</StatusBadge></TableCell>
-              <TableCell>
-                <ActionButton>
-                  <Edit3 size={14} />
-                  Edit
-                </ActionButton>
-              </TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
+        <TableContainer>
+          <Table>
+            <thead>
+              <tr>
+                <TableHeader>Schedule Name</TableHeader>
+                <TableHeader>Frequency</TableHeader>
+                <TableHeader>Next Run</TableHeader>
+                <TableHeader>Status</TableHeader>
+                <TableHeader>Actions</TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              <TableRow>
+                <TableCell>Daily Full Sync</TableCell>
+                <TableCell>Every day at 2:00 AM</TableCell>
+                <TableCell>Tomorrow 2:00 AM</TableCell>
+                <TableCell><StatusBadge status="success"><CheckCircle size={12} />Active</StatusBadge></TableCell>
+                <TableCell>
+                  <ActionButton>
+                    <Edit3 size={14} />
+                    Edit
+                  </ActionButton>
+                </TableCell>
+              </TableRow>
+            </tbody>
+          </Table>
+        </TableContainer>
       </SectionContainer>
 
       <SectionContainer>
@@ -864,33 +967,35 @@ export const AdminDashboard: React.FC = () => {
             Sync History
           </SectionTitle>
         </SectionHeader>
-        <Table>
-          <thead>
-            <tr>
-              <TableHeader>Start Time</TableHeader>
-              <TableHeader>Duration</TableHeader>
-              <TableHeader>Files Processed</TableHeader>
-              <TableHeader>Status</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            {syncRecords.map(record => (
-              <TableRow key={record.id}>
-                <TableCell>{record.timestamp.toLocaleString()}</TableCell>
-                <TableCell>{record.duration}</TableCell>
-                <TableCell>{record.filesProcessed.toLocaleString()} files</TableCell>
-                <TableCell>
-                  <StatusBadge status={record.status}>
-                    {record.status === 'success' && <CheckCircle size={12} />}
-                    {record.status === 'error' && <XCircle size={12} />}
-                    {record.status === 'warning' && <Clock size={12} />}
-                    {record.status === 'success' ? 'Completed' : record.status === 'error' ? 'Failed' : 'In Progress'}
-                  </StatusBadge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </tbody>
-        </Table>
+        <TableContainer>
+          <Table>
+            <thead>
+              <tr>
+                <TableHeader>Start Time</TableHeader>
+                <TableHeader>Duration</TableHeader>
+                <TableHeader>Files Processed</TableHeader>
+                <TableHeader>Status</TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              {syncRecords.map(record => (
+                <TableRow key={record.id}>
+                  <TableCell>{record.timestamp.toLocaleString()}</TableCell>
+                  <TableCell>{record.duration}</TableCell>
+                  <TableCell>{record.filesProcessed.toLocaleString()} files</TableCell>
+                  <TableCell>
+                    <StatusBadge status={record.status}>
+                      {record.status === 'success' && <CheckCircle size={12} />}
+                      {record.status === 'error' && <XCircle size={12} />}
+                      {record.status === 'warning' && <Clock size={12} />}
+                      {record.status === 'success' ? 'Completed' : record.status === 'error' ? 'Failed' : 'In Progress'}
+                    </StatusBadge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </tbody>
+          </Table>
+        </TableContainer>
       </SectionContainer>
     </>
   );
@@ -934,60 +1039,62 @@ export const AdminDashboard: React.FC = () => {
           ))}
         </BreadcrumbContainer>
         
-        <Table>
-          <thead>
-            <tr>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Type</TableHeader>
-              <TableHeader>Size</TableHeader>
-              <TableHeader>Modified</TableHeader>
-              <TableHeader>Source</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map(file => (
-              <InteractiveTableRow 
-                key={file.id} 
-                isFolder={file.type === 'folder'}
-                onDoubleClick={() => {
-                  if (file.type === 'folder') {
-                    navigateToFolder(file.path);
-                  }
-                }}
-              >
-                <TableCell>
-                  <FileNameContainer isFolder={file.type === 'folder'}>
-                    {file.type === 'folder' ? 
-                      <Folder size={16} color="#3b82f6" /> : 
-                      <File size={16} color="#10b981" />
+        <TableContainer>
+          <Table>
+            <thead>
+              <tr>
+                <TableHeader>Name</TableHeader>
+                <TableHeader>Type</TableHeader>
+                <TableHeader>Size</TableHeader>
+                <TableHeader>Modified</TableHeader>
+                <TableHeader>Source</TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map(file => (
+                <InteractiveTableRow 
+                  key={file.id} 
+                  isFolder={file.type === 'folder'}
+                  onDoubleClick={() => {
+                    if (file.type === 'folder') {
+                      navigateToFolder(file.path);
                     }
-                    {file.name}
-                    {file.type === 'folder' && file.children && (
-                      <span style={{ color: '#6b7280', fontSize: '0.75rem', marginLeft: '4px' }}>
-                        ({file.children.length} items)
-                      </span>
-                    )}
-                  </FileNameContainer>
-                </TableCell>
-                <TableCell style={{ textTransform: 'capitalize' }}>{file.type}</TableCell>
-                <TableCell>{file.size}</TableCell>
-                <TableCell>{file.lastModified.toLocaleDateString()}</TableCell>
-                <TableCell>
-                  {file.path.startsWith('/Help Engine') ? 'Help Engine' : 
-                   file.path.startsWith('/Documents') ? 'Main Corporate Site' : 
-                   'Main Corporate Site'}
-                </TableCell>
-              </InteractiveTableRow>
-            ))}
-            {currentItems.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
-                  This folder is empty
-                </TableCell>
-              </TableRow>
-            )}
-          </tbody>
-        </Table>
+                  }}
+                >
+                  <TableCell>
+                    <FileNameContainer isFolder={file.type === 'folder'}>
+                      {file.type === 'folder' ? 
+                        <Folder size={16} color="#3b82f6" /> : 
+                        <File size={16} color="#10b981" />
+                      }
+                      {file.name}
+                      {file.type === 'folder' && file.children && (
+                        <span style={{ color: '#6b7280', fontSize: '0.75rem', marginLeft: '4px' }}>
+                          ({file.children.length} items)
+                        </span>
+                      )}
+                    </FileNameContainer>
+                  </TableCell>
+                  <TableCell style={{ textTransform: 'capitalize' }}>{file.type}</TableCell>
+                  <TableCell>{file.size}</TableCell>
+                  <TableCell>{file.lastModified.toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {file.path.startsWith('/Help Engine') ? 'Help Engine' : 
+                     file.path.startsWith('/Documents') ? 'Main Corporate Site' : 
+                     'Main Corporate Site'}
+                  </TableCell>
+                </InteractiveTableRow>
+              ))}
+              {currentItems.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
+                    This folder is empty
+                  </TableCell>
+                </TableRow>
+              )}
+            </tbody>
+          </Table>
+        </TableContainer>
       </SectionContainer>
     );
   };
@@ -1004,40 +1111,42 @@ export const AdminDashboard: React.FC = () => {
           Add User
         </ActionButton>
       </SectionHeader>
-      <Table>
-        <thead>
-          <tr>
-            <TableHeader>Name</TableHeader>
-            <TableHeader>Email</TableHeader>
-            <TableHeader>Role</TableHeader>
-            <TableHeader>Last Active</TableHeader>
-            <TableHeader>Status</TableHeader>
-            <TableHeader>Actions</TableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {userAccess.map(user => (
-            <TableRow key={user.id}>
-              <TableCell>{user.email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase())}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell style={{ textTransform: 'capitalize' }}>{user.role}</TableCell>
-              <TableCell>{user.lastLogin.toLocaleDateString()}</TableCell>
-              <TableCell>
-                <StatusBadge status={user.isActive ? 'success' : 'warning'}>
-                  {user.isActive ? <CheckCircle size={12} /> : <Clock size={12} />}
-                  {user.isActive ? 'Active' : 'Inactive'}
-                </StatusBadge>
-              </TableCell>
-              <TableCell>
-                <ActionButton>
-                  <Edit3 size={14} />
-                  Edit
-                </ActionButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </tbody>
-      </Table>
+      <TableContainer>
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>Name</TableHeader>
+              <TableHeader>Email</TableHeader>
+              <TableHeader>Role</TableHeader>
+              <TableHeader>Last Active</TableHeader>
+              <TableHeader>Status</TableHeader>
+              <TableHeader>Actions</TableHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {userAccess.map(user => (
+              <TableRow key={user.id}>
+                <TableCell>{user.email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase())}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell style={{ textTransform: 'capitalize' }}>{user.role}</TableCell>
+                <TableCell>{user.lastLogin.toLocaleDateString()}</TableCell>
+                <TableCell>
+                  <StatusBadge status={user.isActive ? 'success' : 'warning'}>
+                    {user.isActive ? <CheckCircle size={12} /> : <Clock size={12} />}
+                    {user.isActive ? 'Active' : 'Inactive'}
+                  </StatusBadge>
+                </TableCell>
+                <TableCell>
+                  <ActionButton>
+                    <Edit3 size={14} />
+                    Edit
+                  </ActionButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
+      </TableContainer>
     </SectionContainer>
   );
 
@@ -1078,28 +1187,28 @@ export const AdminDashboard: React.FC = () => {
             onClick={() => setActiveTab('overview')}
           >
             <BarChart3 size={16} />
-            Overview
+            <span>Overview</span>
           </TabButton>
           <TabButton
             active={activeTab === 'sharepoint'}
             onClick={() => setActiveTab('sharepoint')}
           >
             <Database size={16} />
-            SharePoint Sites
+            <span>SharePoint Sites</span>
           </TabButton>
           <TabButton
             active={activeTab === 'files'}
             onClick={() => setActiveTab('files')}
           >
             <Folder size={16} />
-            Files & Folders
+            <span>Files & Folders</span>
           </TabButton>
           <TabButton
             active={activeTab === 'users'}
             onClick={() => setActiveTab('users')}
           >
             <Users size={16} />
-            User Management
+            <span>User Management</span>
           </TabButton>
         </TabNavigation>
 

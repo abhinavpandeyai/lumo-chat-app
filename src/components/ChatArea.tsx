@@ -22,12 +22,27 @@ const ChatHeader = styled.div`
   border-bottom: 1px solid ${props => props.theme.colors.border};
   min-height: 40px;
   position: relative;
+
+  @media (max-width: 768px) {
+    min-height: 60px;
+    padding: ${props => props.theme.spacing.sm} 0;
+  }
 `;
 
 const ChatHeaderLogo = styled.img`
   width: 120px;
   height: 120px;
   object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (max-width: 480px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const ChatTitle = styled.h2`
@@ -48,12 +63,24 @@ const MessagesContainer = styled.div`
   overflow-y: auto;
   padding: ${props => props.theme.spacing.lg};
   background-color: ${props => props.theme.colors.background};
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.md};
+  }
+
+  @media (max-width: 480px) {
+    padding: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const MessagesWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const WelcomeContainer = styled.div`
@@ -79,12 +106,30 @@ const WelcomeTitle = styled.h1`
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.xl};
   max-width: 600px;
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+    margin-bottom: ${props => props.theme.spacing.lg};
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    margin-bottom: ${props => props.theme.spacing.md};
+  }
 `;
 
 const CenteredInputContainer = styled.div`
   width: 100%;
   max-width: 600px;
   margin: ${props => props.theme.spacing.xl} 0;
+
+  @media (max-width: 768px) {
+    margin: ${props => props.theme.spacing.lg} 0;
+  }
+
+  @media (max-width: 480px) {
+    margin: ${props => props.theme.spacing.md} 0;
+  }
 `;
 
 const SuggestionsContainer = styled.div`
@@ -94,6 +139,11 @@ const SuggestionsContainer = styled.div`
   margin-top: ${props => props.theme.spacing.lg};
   width: 100%;
   max-width: 600px;
+
+  @media (max-width: 768px) {
+    gap: ${props => props.theme.spacing.sm};
+    margin-top: ${props => props.theme.spacing.md};
+  }
 `;
 
 const SuggestionButton = styled.button`
@@ -139,6 +189,20 @@ const ScrollToBottom = styled.button`
   
   &:hover {
     transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    bottom: 140px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+  }
+
+  @media (max-width: 480px) {
+    bottom: 120px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
   }
 `;
 
